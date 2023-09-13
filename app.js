@@ -9,7 +9,7 @@ const app = express();
 mongoose.connect(
   NODE_ENV === 'production'
     ? DB_ADDRESS
-    : 'mongodb://127.0.0.1:27017/bitfilmsdb',
+    : 'mongodb://127.0.0.1:27017/motyadb',
 );
 
 app.use(rootRouter);

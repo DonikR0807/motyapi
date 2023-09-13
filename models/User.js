@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
       validator: isEmail,
     },
   },
-  name: {
+  userName: {
     type: String,
     required: true,
     minlength: 2,

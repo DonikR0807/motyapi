@@ -1,5 +1,6 @@
 const { Joi } = require('celebrate');
 const urlExpression = require('./urlExpression');
+const passwordExpression = require('./passwordExpression');
 
 const linkValidator = (value, helpers) => {
   if (!urlExpression.test(value)) {
@@ -15,18 +16,25 @@ const categoryValidator = (value, helpers) => {
   return value;
 };
 
+const passwordValidator = (value, helpers) => {
+  if (!passwordExpression.test(value)) {
+    return helpers.error('incorrect password');
+  }
+  return value;
+};
+
 const loginValidator = {
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required(),
+    password: Joi.string().required().custom(passwordValidator),
   }),
 };
 
 const registerValidator = {
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required(),
-    name: Joi.string().required().min(2).max(30),
+    password: Joi.string().required().custom(passwordValidator),
+    userName: Joi.string().required().min(2).max(30),
   }),
 };
 
