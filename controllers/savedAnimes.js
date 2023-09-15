@@ -7,7 +7,7 @@ const getSavedAnimes = async (req, res, next) => {
   const { _id } = req.user;
 
   try {
-    const savedAnimes = await SavedAnime.find({ owner: _id });
+    const savedAnimes = await SavedAnime.find({ owner: _id }).populate('owner');
     res.send(savedAnimes);
   } catch (err) {
     let customError = err;
@@ -31,13 +31,7 @@ const saveAnime = async (req, res, next) => {
   } catch (err) {
     let customError = err;
 
-    if (err.name === 'ValidationError') {
-      customError = new InvalidDataError(
-        'Переданы некорректные данные при сохранении аниме',
-      );
-    }
-
-    if (err.name === 'CastError') {
+    if (err.name === 'ValidationError' || err.name === 'CastError') {
       customError = new InvalidDataError(
         'Переданы некорректные данные при сохранении аниме',
       );
@@ -55,7 +49,7 @@ const deleteAnime = async (req, res, next) => {
     const savedAnime = await SavedAnime.findById(animeId).orFail();
     if (savedAnime.owner.toString() === _id) {
       return savedAnime.deleteOne().then(() => {
-        res.send({ message: 'Аниме удаленно' });
+        res.send({ message: 'Аниме удалено' });
       });
     }
     throw new ForbiddenError('Нельзя удалить чужое аниме');

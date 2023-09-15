@@ -21,21 +21,14 @@ const getComments = async (req, res, next) => {
 const createComment = async (req, res, next) => {
   const { _id } = req.user;
 
-  const createdComment = Comment({ ...req.body, owner: _id });
-
   try {
+    const createdComment = await Comment({ ...req.body, owner: _id }).populate('owner');
     const savedComment = await createdComment.save();
     res.send(savedComment);
   } catch (err) {
     let customError = err;
 
-    if (err.name === 'ValidationError') {
-      customError = new InvalidDataError(
-        'Переданы некорректные данные при создании комментария',
-      );
-    }
-
-    if (err.name === 'CastError') {
+    if (err.name === 'ValidationError' || err.name === 'CastError') {
       customError = new InvalidDataError(
         'Переданы некорректные данные при создании комментария',
       );

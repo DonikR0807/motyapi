@@ -20,10 +20,10 @@ const getMe = (req, res, next) => {
 };
 
 const updateProfile = (req, res, next) => {
-  const { email, name } = req.body;
+  const { email, userName } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { email, name },
+    { email, userName },
     { new: true, runValidators: true },
   )
     .orFail()
@@ -31,7 +31,7 @@ const updateProfile = (req, res, next) => {
     .catch((err) => {
       let customError = err;
 
-      if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         customError = new InvalidDataError(
           'Переданы некорректные данные при обновлении профиля',
         );

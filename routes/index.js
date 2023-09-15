@@ -7,6 +7,8 @@ const cors = require('cors');
 
 const { requestLogger } = require('../middlewares/logger');
 const { userRouter } = require('./users');
+const { savedAnimesRouter } = require('./savedAnimes');
+const { commentsRouter } = require('./comments');
 const NotFoundError = require('../utils/errorClasses/NotFoundError');
 const globalHandler = require('../middlewares/globalHandler');
 const corsOptions = require('../utils/corsOptions');
@@ -21,6 +23,8 @@ router.use(cookieParser());
 router.use('/', tokenRouter);
 router.use('/', auth);
 router.use('/', userRouter);
+router.use('/', savedAnimesRouter);
+router.use('/', commentsRouter);
 router.use((req, res, next) => {
   next(new NotFoundError('Невалидный роут'));
 });

@@ -36,6 +36,6 @@ const savedAnimeSchema = mongoose.Schema({
   },
 });
 
-const SavedAnime = mongoose.Model('SavedAnime', savedAnimeSchema);
+const SavedAnime = mongoose.model('SavedAnime', savedAnimeSchema);
 
 module.exports = SavedAnime;
