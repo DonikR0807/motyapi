@@ -7,7 +7,7 @@ const getSavedAnimes = async (req, res, next) => {
   const { _id } = req.user;
 
   try {
-    const savedAnimes = await SavedAnime.find({ owner: _id }).populate('owner');
+    const savedAnimes = await SavedAnime.find({ owner: _id });
     res.send(savedAnimes);
   } catch (err) {
     let customError = err;
@@ -22,12 +22,20 @@ const getSavedAnimes = async (req, res, next) => {
 
 const saveAnime = async (req, res, next) => {
   const { _id } = req.user;
-
-  const document = SavedAnime({ ...req.body, owner: _id });
+  const { animeId, category } = req.body;
 
   try {
-    const savedAnime = await document.save();
-    res.send(savedAnime);
+    const foundAnime = await SavedAnime.findOne({ animeId, owner: _id });
+    if (!foundAnime) {
+      const savedAnime = await SavedAnime.create({ ...req.body, owner: _id });
+      res.send(savedAnime);
+    } else if (foundAnime.category !== category) {
+      foundAnime.category = category;
+      await foundAnime.save();
+      res.send(foundAnime);
+    } else {
+      res.send(foundAnime);
+    }
   } catch (err) {
     let customError = err;
 

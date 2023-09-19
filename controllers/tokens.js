@@ -36,11 +36,9 @@ const register = async (req, res, next) => {
     });
 
     res.send({
-      user: {
-        _id: createdUser._id,
-        email: createdUser.email,
-        userName: createdUser.userName,
-      },
+      _id: createdUser._id,
+      email: createdUser.email,
+      userName: createdUser.userName,
     });
   } catch (err) {
     let customError = err;
@@ -84,11 +82,9 @@ const login = async (req, res, next) => {
     });
 
     res.send({
-      user: {
-        _id: foundUser._id,
-        email: foundUser.email,
-        userName: foundUser.userName,
-      },
+      _id: foundUser._id,
+      email: foundUser.email,
+      userName: foundUser.userName,
     });
   } catch (err) {
     let customError = err;
@@ -159,11 +155,9 @@ const refresh = async (req, res, next) => {
     });
 
     res.send({
-      user: {
-        _id: foundUser._id,
-        email: foundUser.email,
-        userName: foundUser.userName,
-      },
+      _id: foundUser._id,
+      email: foundUser.email,
+      userName: foundUser.userName,
     });
   } catch (err) {
     next(err);

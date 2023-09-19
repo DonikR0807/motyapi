@@ -32,7 +32,7 @@ const savedAnimeSchema = mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['saved', 'planned'],
+    enum: ['watched', 'planned'],
   },
 });
 

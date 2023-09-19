@@ -10,7 +10,7 @@ const linkValidator = (value, helpers) => {
 };
 
 const categoryValidator = (value, helpers) => {
-  if (value !== 'saved' && value !== 'planned') {
+  if (value !== 'watched' && value !== 'planned') {
     return helpers.error('incorrect category');
   }
   return value;
