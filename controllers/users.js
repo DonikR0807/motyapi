@@ -7,7 +7,11 @@ const getMe = (req, res, next) => {
   const { _id } = req.user;
   User.findById(_id)
     .orFail()
-    .then((user) => res.send(user))
+    .then((user) => res.send({
+      _id: user._id,
+      email: user.email,
+      userName: user.userName,
+    }))
     .catch((err) => {
       let customError = err;
 
@@ -27,7 +31,11 @@ const updateProfile = (req, res, next) => {
     { new: true, runValidators: true },
   )
     .orFail()
-    .then((user) => res.send(user))
+    .then((user) => res.send({
+      _id: user._id,
+      email: user.email,
+      userName: user.userName,
+    }))
     .catch((err) => {
       let customError = err;
 
