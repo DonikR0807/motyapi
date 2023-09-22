@@ -1,9 +1,7 @@
 const router = require('express').Router();
 const { celebrate } = require('celebrate');
-const { createComment, getComments } = require('../controllers/comments');
-const { createCommentValidator, getCommentsValidator } = require('../utils/validators');
-
-router.get('/comments/:animeId', celebrate(getCommentsValidator), getComments);
+const { createComment } = require('../controllers/comments');
+const { createCommentValidator } = require('../utils/validators');
 
 router.post('/comments', celebrate(createCommentValidator), createComment);
 
