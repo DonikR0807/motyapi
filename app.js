@@ -1,7 +1,7 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const { rootRouter } = require('./routes');
+import 'dotenv/config';
+import express from 'express';
+import mongoose from 'mongoose';
+import rootRouter from './src/routes/index.js';
 
 const { NODE_ENV, DB_ADDRESS } = process.env;
 const app = express();
@@ -18,4 +18,4 @@ const { PORT = 3000 } = process.env;
 
 app.listen(PORT);
 
-module.exports = app;
+export default app;
