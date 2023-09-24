@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
 import urlExpression from '../utils/urlExpression.js';
+import { defaultAvatar, defaultCover } from '../utils/defaultImages.js';
 
 const userSchema = mongoose.Schema({
   email: {
@@ -24,14 +25,12 @@ const userSchema = mongoose.Schema({
   },
   avatar: {
     type: String,
-    default:
-      'https://storage.yandexcloud.net/motyanime/users/profilePicture/profile.png',
+    default: defaultAvatar,
     match: urlExpression,
   },
   cover: {
     type: String,
-    default:
-      'https://storage.yandexcloud.net/motyanime/users/profileBackground/your_name.jpg',
+    default: defaultCover,
     match: urlExpression,
   },
 });
