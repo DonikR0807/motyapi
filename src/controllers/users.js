@@ -25,13 +25,19 @@ const updateProfile = async (req, res, next) => {
         },
         '/users/covers/',
       );
+      if (!upload) {
+        throw new Error('На сервере произошла ошибка');
+      }
       const { Location } = upload;
       if (user.cover !== defaultCover) {
         const path = user.cover.replace(
           'https://motyanime.storage.yandexcloud.net',
           '',
         );
-        await s3.Remove(path);
+        const removed = await s3.Remove(path);
+        if (!removed) {
+          throw new Error('На сервере произошла ошибка');
+        }
       }
       user.cover = Location;
     }
@@ -46,13 +52,19 @@ const updateProfile = async (req, res, next) => {
         },
         '/users/avatars/',
       );
+      if (!upload) {
+        throw new Error('На сервере произошла ошибка');
+      }
       const { Location } = upload;
       if (user.avatar !== defaultAvatar) {
         const path = user.avatar.replace(
           'https://motyanime.storage.yandexcloud.net',
           '',
         );
-        await s3.Remove(path);
+        const removed = await s3.Remove(path);
+        if (!removed) {
+          throw new Error('На сервере произошла ошибка');
+        }
       }
       user.avatar = Location;
     }
