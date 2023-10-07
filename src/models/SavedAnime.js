@@ -8,7 +8,8 @@ const savedAnimeSchema = mongoose.Schema({
     required: true,
   },
   animeId: {
-    type: String,
+    type: mongoose.ObjectId,
+    ref: 'Anime',
     required: true,
   },
   names: {

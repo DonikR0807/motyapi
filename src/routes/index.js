@@ -10,6 +10,7 @@ import userRouter from './users.js';
 import savedAnimesRouter from './savedAnimes.js';
 import commentsRouter from './comments.js';
 import tokenRouter from './tokens.js';
+import animesRouter from './animes.js';
 import NotFoundError from '../utils/errorClasses/NotFoundError.js';
 import globalHandler from '../middlewares/globalHandler.js';
 import corsOptions from '../utils/corsOptions.js';
@@ -30,6 +31,7 @@ router.get(
   celebrate(validators.getCommentsValidator),
   commentController.getComments,
 );
+router.use('/', animesRouter);
 router.use('/', auth);
 router.use('/', userRouter);
 router.use('/', savedAnimesRouter);

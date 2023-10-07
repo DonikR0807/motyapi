@@ -1,3 +1,4 @@
+import Anime from '../models/Anime.js';
 import SavedAnime from '../models/SavedAnime.js';
 import ForbiddenError from '../utils/errorClasses/ForbiddenError.js';
 import InvalidDataError from '../utils/errorClasses/InvalidDataError.js';
@@ -25,16 +26,20 @@ const saveAnime = async (req, res, next) => {
   const { animeId, category } = req.body;
 
   try {
-    const foundAnime = await SavedAnime.findOne({ animeId, owner: _id });
+    const foundAnime = await Anime.findById(animeId);
     if (!foundAnime) {
+      throw new InvalidDataError("Аниме с таким id не был найден");
+    }
+    const savedAnime = await SavedAnime.findOne({ animeId, owner: _id });
+    if (!savedAnime) {
       const savedAnime = await SavedAnime.create({ ...req.body, owner: _id });
       res.send(savedAnime);
-    } else if (foundAnime.category !== category) {
-      foundAnime.category = category;
-      await foundAnime.save();
-      res.send(foundAnime);
+    } else if (savedAnime.category !== category) {
+      savedAnime.category = category;
+      await savedAnime.save();
+      res.send(savedAnime);
     } else {
-      res.send(foundAnime);
+      res.send(savedAnime);
     }
   } catch (err) {
     let customError = err;

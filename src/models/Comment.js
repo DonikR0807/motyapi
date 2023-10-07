@@ -15,7 +15,8 @@ const commentSchema = mongoose.Schema({
     required: true,
   },
   animeId: {
-    type: Number,
+    type:  mongoose.ObjectId,
+    ref: 'Anime',
     required: true,
   },
 });

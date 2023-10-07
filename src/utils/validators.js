@@ -47,7 +47,7 @@ const updateProfileValidator = {
 
 const getCommentsValidator = {
   params: Joi.object().keys({
-    animeId: Joi.number().required(),
+    animeId: Joi.string().required().hex().length(24),
   }),
 };
 
@@ -55,13 +55,13 @@ const createCommentValidator = {
   body: Joi.object().keys({
     createdAt: Joi.date().required(),
     text: Joi.string().required(),
-    animeId: Joi.number().required(),
+    animeId: Joi.string().required().hex().length(24),
   }),
 };
 
 const saveAnimeValidator = {
   body: Joi.object().keys({
-    animeId: Joi.number().required(),
+    animeId: Joi.string().required().hex().length(24),
     category: Joi.string().required().custom(categoryValidator),
     genres: Joi.array().required().items(Joi.string().required()),
     status: Joi.object().required().keys({
