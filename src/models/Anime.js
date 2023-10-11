@@ -56,7 +56,7 @@ const animeSchema = mongoose.Schema({
         required: true,
       },
     },
-    genres: [{ type: String, required: true }]
+    genres: [{ type: String, required: true }],
   },
 });
 

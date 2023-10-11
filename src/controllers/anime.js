@@ -1,4 +1,7 @@
 import Anime from '../models/Anime.js';
+import allGenres from '../utils/allGenres.js';
+import InvalidDataError from '../utils/errorClasses/InvalidDataError.js';
+import NotFoundError from '../utils/errorClasses/NotFoundError.js';
 
 const getAnimes = async (req, res, next) => {
   try {
@@ -9,7 +12,7 @@ const getAnimes = async (req, res, next) => {
     let genre = req.query.genre || 'All';
 
     if (genre === 'All') {
-      genre = [...genre];
+      genre = [...allGenres];
     } else {
       genre = genre.split(',');
     }
@@ -19,6 +22,7 @@ const getAnimes = async (req, res, next) => {
     } else {
       sort = sort.split(',');
     }
+
     let sortBy = {};
     if (sort[1]) {
       sortBy[sort[0]] = sort[1];
@@ -32,14 +36,14 @@ const getAnimes = async (req, res, next) => {
         $options: 'i',
       },
     })
-      .where('genre')
+      .where('genres')
       .in([...genre])
       .sort(sortBy)
       .skip(page * limit)
       .limit(limit);
 
     const totalAnimes = await Anime.countDocuments({
-      genre: { $in: [...genre] },
+      genres: { $in: [...genre] },
       'names.ru': {
         $regex: search,
         $options: 'i',
@@ -48,13 +52,31 @@ const getAnimes = async (req, res, next) => {
 
     res.send({
       list: animes,
-      total: totalAnimes
-    })
+      total: totalAnimes,
+    });
   } catch (err) {
     next(err);
   }
 };
 
+const getAnime = async (req, res, next) => {
+  try {
+    const { animeId } = req.params;
+
+    const foundAnime = await Anime.findById(animeId).orFail();
+    res.send(foundAnime);
+  } catch (err) {
+    let customError = err;
+    
+    if (err.name === 'DocumentNotFoundError') {
+      customError = new NotFoundError('Aниме с указанным _id не найден');
+    }
+
+    next(customError);
+  }
+};
+
 export default {
   getAnimes,
+  getAnime
 };

@@ -80,6 +80,12 @@ const deleteAnimeValidator = {
   }),
 };
 
+const getAnimeValidator = {
+  params: Joi.object().keys({
+    animeId: Joi.string().required().hex().length(24),
+  }),
+};
+
 export default {
   loginValidator,
   registerValidator,
@@ -88,4 +94,5 @@ export default {
   createCommentValidator,
   saveAnimeValidator,
   deleteAnimeValidator,
+  getAnimeValidator,
 };
