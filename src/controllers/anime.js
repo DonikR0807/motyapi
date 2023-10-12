@@ -1,12 +1,11 @@
 import Anime from '../models/Anime.js';
 import allGenres from '../utils/allGenres.js';
-import InvalidDataError from '../utils/errorClasses/InvalidDataError.js';
 import NotFoundError from '../utils/errorClasses/NotFoundError.js';
 
 const getAnimes = async (req, res, next) => {
   try {
-    const page = parseInt(req.query.page) - 1 || 0;
-    const limit = parseInt(req.query.limit) || 5;
+    const page = parseInt(req.query.page, 10) - 1 || 0;
+    const limit = parseInt(req.query.limit, 10) || 5;
     const search = req.query.search || '';
     let sort = req.query.sort || 'names.ru';
     let genre = req.query.genre || 'All';
@@ -23,9 +22,10 @@ const getAnimes = async (req, res, next) => {
       sort = sort.split(',');
     }
 
-    let sortBy = {};
+    const sortBy = {};
     if (sort[1]) {
-      sortBy[sort[0]] = sort[1];
+      const [sortParam, sortOrder] = sort;
+      sortBy[sortParam] = sortOrder;
     } else {
       sortBy[sort[0]] = 'asc';
     }
@@ -67,7 +67,7 @@ const getAnime = async (req, res, next) => {
     res.send(foundAnime);
   } catch (err) {
     let customError = err;
-    
+
     if (err.name === 'DocumentNotFoundError') {
       customError = new NotFoundError('Aниме с указанным _id не найден');
     }
@@ -78,5 +78,5 @@ const getAnime = async (req, res, next) => {
 
 export default {
   getAnimes,
-  getAnime
+  getAnime,
 };
