@@ -8,13 +8,7 @@ const getComments = async (req, res, next) => {
     const comments = await Comment.find({ animeId }).populate('owner');
     res.send(comments);
   } catch (err) {
-    let customError = err;
-
-    if (err.name === 'CastError') {
-      customError = new InvalidDataError('Передан неправильный Id');
-    }
-
-    next(customError);
+    next(err);
   }
 };
 

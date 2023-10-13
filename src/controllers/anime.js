@@ -8,12 +8,12 @@ const getAnimes = async (req, res, next) => {
     const limit = parseInt(req.query.limit, 10) || 5;
     const search = req.query.search || '';
     let sort = req.query.sort || 'names.ru';
-    let genre = req.query.genre || 'All';
+    let genres = req.query.genres || 'All';
 
-    if (genre === 'All') {
-      genre = [...allGenres];
+    if (genres === 'All') {
+      genres = [...allGenres];
     } else {
-      genre = genre.split(',');
+      genres = genres.split(',');
     }
 
     if (sort === 'names.ru') {
@@ -37,13 +37,13 @@ const getAnimes = async (req, res, next) => {
       },
     })
       .where('genres')
-      .in([...genre])
+      .in([...genres])
       .sort(sortBy)
       .skip(page * limit)
       .limit(limit);
 
     const totalAnimes = await Anime.countDocuments({
-      genres: { $in: [...genre] },
+      genres: { $in: [...genres] },
       'names.ru': {
         $regex: search,
         $options: 'i',
